@@ -1,54 +1,33 @@
+package edu.miracosta.cs113;
 import java.util.*;
+
 public class DoubleLinkedList<E> extends AbstractSequentialList<E>
 {  // Data fields
     	private Node<E> head = null;   // points to the head of the list
     	private Node<E> tail = null;   //points to the tail of the list
     	private int size = 0;    // the number of items in the list
   
-public void add(int index, E obj)
-  {
-	  listIterator(index).add(obj);
+  public void add(int index, E obj)
+  { // Fill Here 
    }
   public void addFirst(E obj) { // Fill Here 
-	  Node newHead = new Node(obj);
-	  if (head !=null) {
-		  newHead.next = head;
-		  newHead.prev = newHead;
+	  
   }
-	  else {
-		  head = newHead;
-		  size++;
-	  }
-}
-  public void addLast(E obj) { 
-	  Node newTail = new Node(obj);
-	  if (tail != null) {
-		  newTail.prev = tail;
-		  tail.next = newTail;
-	  }
-	  else {
-		  tail = newTail;
-		  size++;
-	  }  
+  public void addLast(E obj) { // Fill Here
   }
-  @Override
+
   public E get(int index) 
-  { 
-	  if (index < 0  || index > size) {
-		  throw new  IndexOutOfBoundsException("Invalid index: " + index);
-	  }
-	  ListIterator<E> iter = listIterator(index);
-	  return iter.next();
+  { 	ListIterator<E> iter = listIterator(index); 
+      	return iter.next();
   }  
   public E getFirst() { return head.data;  }
   public E getLast() { return tail.data;  }
 
-  public int size() {  return size;  } // Fill Here
+  public int size() {  return -1;  } // Fill Here
 
   public E remove(int index)
-  {     
-	  E returnValue = null;
-      ListIterator<E> iter = listIterator(index);
+  {     E returnValue = null;
+        ListIterator<E> iter = listIterator(index);
         if (iter.hasNext())
         {   returnValue = iter.next();
             iter.remove();
@@ -70,8 +49,7 @@ public void add(int index, E obj)
         private Node<E> prev = null;
 
         private Node(E dataItem)  //constructor
-        {   data = dataItem;   
-        }
+        {   data = dataItem;   }
   }  // end class Node
 
   public class ListIter implements ListIterator<E> 
@@ -83,11 +61,10 @@ public void add(int index, E obj)
     public ListIter(int i)  // constructor for ListIter class
     {   if (i < 0 || i > size)
         {     throw new IndexOutOfBoundsException("Invalid index " + i); }
-        	lastItemReturned = null;
+        lastItemReturned = null;
  
         if (i == size)     // Special case of last item
-        {     index = size;     nextItem = null;      
-        }
+        {     index = size;     nextItem = null;      }
         else          // start at the beginning
         {   nextItem = head;
             for (index = 0; index < i; index++)  nextItem = nextItem.next;   
@@ -98,121 +75,26 @@ public void add(int index, E obj)
     {   nextItem = other.nextItem;
         index = other.index;    }
 
-    public boolean hasNext() {   
-    	return (nextItem != null);
-    } // Fill Here
+    public boolean hasNext() {   return true;    } // Fill Here
     public boolean hasPrevious()
-    {   if(size!=0){
-    	return (nextItem == null || nextItem.prev != null);
-    		}
-    	else {
-    		return false;
-    	}
-    }
-    public int previousIndex() {  return index - 1;    } // Fill Here
-    public int nextIndex() {  return index;    } // Fill here
-    public void set(E o)  {
-    	if (lastItemReturned != null)
-    	{
-    		lastItemReturned.data = o;
-    	}
-    	else
-    	{
-    		throw new IllegalStateException();
-    	}
-    	size--;
-    	index--;
-    }  // not implemented
-    public void remove(){
-    	if(lastItemReturned != null)
-    	{
-    		if(lastItemReturned.prev !=null)
-    		{
-    			lastItemReturned.prev.next = lastItemReturned.next;
-    		}
-    		else
-    		{
-    			head = lastItemReturned.next;
-    			if(tail == null)
-    			{
-    				head = null;
-    			} else {
-    				tail.next = null;
-    			}
-    		}
-    		if (lastItemReturned.next != null)
-    		{
-    			lastItemReturned.next.prev = lastItemReturned.prev;}
-    		else {
-    			tail = lastItemReturned.prev;
-    			
-    			if(tail == null)
-    			{
-    				head = null;
-    			}
-    			else {
-    				tail.next = null;
-    			}
-    		}
-    		lastItemReturned = null;
-    		index--;
-    		size--;		
-    	}
-    	else {
-    		throw new IllegalStateException();
-    	}
-    		
-   }
-    // not implemented
+    {   return false;   } // Fill Here
+    public int previousIndex() {  return 0;    } // Fill Here
+    public int nextIndex() {  return 0;    } // Fill here
+    public void set(E o)  { }  // not implemented
+    public void remove(){}      // not implemented
 
     public E next()
-    {  if(!hasNext())
-    	{
-    	
-    	}
+    {  
         return lastItemReturned.data; // Fill Here 
     }
 
     public E previous() 
-    {  
-    	if(!hasPrevious())
-    	{
-    		throw new NoSuchElementException();
-    	}
-    	if(nextItem == null)
-    	{
-    		nextItem = tail;
-    	}
-    	else {
-    		nextItem = nextItem.prev;
-    	}
-    	lastItemReturned = nextItem;
-    	index--;
-    	return lastItemReturned.data;
+    {  return lastItemReturned.data; // Fill Here 
     }
 
     public void add(E obj) {
-    	Node<E> newNode = new Node<E>(obj);
-    	
-    	if(head == null) {
-    		head = newNode;
-    		tail = newNode;
-    	}
-    	else if(nextItem == head)
-    	{
-    		newNode.next = nextItem;
-    		nextItem.prev = newNode;
-    		head = newNode;
-    	}
-    	else {
-    		newNode.prev = nextItem.prev;
-    		nextItem.prev.next = newNode;
-    		newNode.next = nextItem;
-    		nextItem.prev = newNode;	
-    	}
-    	size++;
-    	index++;
+
     // Fill Here
     }
-  }
-}
+  }// end of inner class ListIter
+}// end of class DoubleLinkedList
